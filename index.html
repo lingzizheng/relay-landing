@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relay — Move anything. Any chain. Instantly.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --v2:#F7F8FF;--v3:#EFF1FF;--v5:#D7DBFF;--v6:#C8CCFF;--v7:#B4B8FF;
+  --v9:#4615C8;--v10:#3B00B4;--v11:#5A45DF;--v12:#2A226E;
+  --s1:#FBFCFD;--s2:#F8F9FA;--s3:#F1F3F5;--s6:#DFE3E6;
+  --s7:#D7DBDF;--s9:#889096;--s11:#687076;--s12:#11181C;
+  --grass:#46A758;--amber:#FFB224;
+  --r-md:8px;--r-lg:12px;--r-xl:16px;--r-full:9999px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+a.logo { text-decoration:none; }
+
+html{scroll-behavior:smooth;}
+body{font-family:Inter,sans-serif;background:#fff;color:var(--s12);
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;padding:12px 12px;
+  background:#fff;border-bottom:1px solid #eceef0;}
+.nav-left{display:flex;align-items:center;gap:32px;}
+.logo{display:flex;align-items:center;gap:8px;flex-shrink:0;text-decoration:none;}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{font-family:Inter,sans-serif;font-size:16px;font-weight:700;
+  color:var(--s12);text-decoration:none;transition:color .18s;}
+.nav-links a:hover{color:var(--v9);}
+.nav-more{display:flex;align-items:center;gap:8px;font-family:Inter,sans-serif;
+  font-size:16px;font-weight:700;color:var(--s12);cursor:pointer;
+  background:none;border:none;padding:0;}
+.nav-more svg{color:var(--s9);}
+.nav-search{display:flex;align-items:center;justify-content:space-between;
+  background:#fff;border-radius:var(--r-lg);border:1px solid #eceef0;
+  padding:8px 10px;width:400px;transition:border-color .15s;}
+.nav-search:focus-within{border-color:var(--v9);}
+.nav-search-inner{display:flex;align-items:center;gap:8px;}
+.nav-search input{background:transparent;border:none;outline:none;
+  font-family:Inter,sans-serif;font-size:14px;font-weight:500;color:var(--s11);width:280px;}
+.nav-search-kbd{border:1px solid var(--s6);border-radius:4px;padding:2px 6px;
+  font-family:Inter,sans-serif;font-size:14px;font-weight:500;color:var(--s11);}
+.nav-wallet{display:flex;align-items:center;gap:8px;
+  border:1px solid #eceef0;border-radius:var(--r-lg);padding:8px 12px;}
+.nav-wallet-icons{display:flex;align-items:center;}
+.nav-wallet-icon{width:20px;height:20px;border-radius:4px;border:1px solid var(--s3);
+  overflow:hidden;background:#eee;display:flex;align-items:center;justify-content:center;
+  font-size:8px;font-weight:700;flex-shrink:0;}
+.nav-wallet-icon+.nav-wallet-icon{margin-left:-6px;}
+.nav-wallet-bal{font-family:Inter,sans-serif;font-size:16px;font-weight:500;color:var(--s12);}
+
+/* HERO */
+.hero-wrap{padding-top:62px;background:#fff;}
+.hero{max-width:1200px;margin:0 auto;padding:64px 52px;
+  display:flex;align-items:center;justify-content:space-between;gap:64px;}
+.hero-left{display:flex;flex-direction:column;gap:34px;max-width:572px;}
+.pill{display:inline-flex;align-items:center;gap:7px;padding:6px 13px;
+  border-radius:var(--r-full);background:var(--s2);border:1px solid var(--s6);
+  font-family:Inter,sans-serif;font-size:12px;font-weight:500;color:var(--s11);
+  align-self:flex-start;animation:fadeUp .4s ease both;}
+.pill-dot{width:6px;height:6px;border-radius:50%;background:var(--grass);
+  box-shadow:0 0 0 3px rgba(70,167,88,.18);animation:breathe 2.2s ease-in-out infinite;position:relative;}
+@keyframes breathe{0%,100%{box-shadow:0 0 0 3px rgba(70,167,88,.18);}
+  50%{box-shadow:0 0 0 5px rgba(70,167,88,.06);}}
+.hero-h1{font-family:'Chivo',sans-serif;font-size:clamp(40px,5vw,64px);line-height:1.05;
+  font-weight:700;letter-spacing:-2.56px;color:var(--s12);margin:0;
+  animation:fadeUp .45s .06s ease both;}
+.hero-h1 em{font-style:italic;color:var(--v9);}
+.hero-p{font-family:Inter,sans-serif;font-size:20px;font-weight:500;color:var(--s11);
+  margin:0;animation:fadeUp .45s .12s ease both;}
+.hero-stats{display:flex;gap:0;animation:fadeUp .45s .26s ease both;}
+.stat{padding-right:28px;margin-right:28px;border-right:1px solid var(--s6);}
+.stat:last-child{border-right:none;padding-right:0;margin-right:0;}
+.stat-n{font-family:Inter,sans-serif;font-size:32px;font-weight:700;color:var(--s12);}
+.stat-l{font-family:Inter,sans-serif;font-size:14px;font-weight:500;color:var(--s9);
+  margin-top:2px;white-space:nowrap;}
+
+/* SWAP WIDGET */
+.swap-widget{display:flex;flex-direction:column;gap:8px;width:400px;flex-shrink:0;
+  animation:fadeUp .55s .08s ease both;position:relative;}
+.swap-arrow-connector{position:absolute;left:50%;transform:translateX(-50%);z-index:10;
+  display:flex;align-items:center;justify-content:center;}
+.swap-arrow-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+  background:#fff;border:2px solid #eceef0;border-radius:8px;cursor:pointer;
+  transition:background .15s;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:0;}
+.swap-arrow-btn:hover{background:var(--s3);}
+.swap-panel{background:#fff;border-radius:var(--r-lg);border:1px solid #eceef0;
+  padding:12px;display:flex;flex-direction:column;gap:12px;}
+.swap-panel-head{display:flex;align-items:center;justify-content:space-between;}
+.swap-panel-label{font-family:Inter,sans-serif;font-size:14px;font-weight:500;color:var(--s11);}
+.swap-addr{display:flex;align-items:center;gap:4px;padding:4px 8px;border-radius:var(--r-full);
+  cursor:pointer;transition:background .15s;border:none;background:none;}
+.swap-addr:hover{background:var(--s3);}
+.swap-addr-icon{width:16px;height:16px;border-radius:3px;overflow:hidden;background:#8247E5;
+  display:flex;align-items:center;justify-content:center;font-size:6px;color:#fff;font-weight:700;}
+.swap-addr-text{font-family:Inter,sans-serif;font-size:14px;font-weight:500;color:var(--s12);}
+.swap-amount-row{display:flex;align-items:center;justify-content:space-between;}
+.swap-amount{font-family:Inter,sans-serif;font-size:32px;font-weight:700;color:var(--s12);
+  background:transparent;border:none;outline:none;width:160px;}
+.swap-amount.placeholder{color:#c1c8cd;}
+.swap-token-btn{display:flex;align-items:center;gap:4px;background:var(--s3);
+  border-radius:var(--r-full);padding:8px 12px;cursor:pointer;border:none;
+  transition:background .15s;}
+.swap-token-btn:hover{background:#e8eaed;}
+.swap-token-icon{width:32px;height:32px;border-radius:50%;overflow:hidden;
+  background:#627EEA;display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:800;color:white;flex-shrink:0;position:relative;}
+.swap-token-chain{position:absolute;bottom:-2px;right:-2px;width:14px;height:14px;
+  border-radius:4px;border:1px solid #fff;overflow:hidden;background:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:5px;font-weight:700;}
+.swap-token-info{display:flex;flex-direction:column;align-items:flex-start;margin-left:4px;}
+.swap-token-symbol{font-family:Inter,sans-serif;font-size:16px;font-weight:700;
+  color:var(--s12);line-height:1.2;}
+.swap-token-chain-name{font-family:Inter,sans-serif;font-size:12px;font-weight:500;
+  color:var(--s11);line-height:1.2;}
+.swap-fiat-row{display:flex;align-items:baseline;justify-content:space-between;}
+.swap-fiat{font-family:Inter,sans-serif;font-size:14px;font-weight:500;color:var(--s11);}
+.swap-balance{font-family:Inter,sans-serif;font-size:12px;font-weight:500;color:var(--s11);}
+.swap-pct-btns{display:flex;align-items:center;gap:4px;}
+.swap-pct{background:var(--s3);border-radius:var(--r-md);padding:4px 6px;
+  font-family:Inter,sans-serif;font-size:12px;font-weight:500;color:var(--s12);
+  cursor:pointer;border:none;transition:background .15s;}
+.swap-pct:hover{background:#e8eaed;}
+.swap-select-token{display:flex;align-items:center;gap:12px;background:var(--v9);
+  border-radius:var(--r-full);padding:12px 16px;cursor:pointer;border:none;
+  transition:background .15s;}
+.swap-select-token:hover{background:var(--v10);}
+.swap-select-token span{font-family:'Chivo',sans-serif;font-size:16px;font-weight:700;
+  font-style:italic;color:#fff;text-transform:uppercase;letter-spacing:.02em;}
+.swap-cta-btn{background:var(--v9);border-radius:var(--r-lg);width:100%;padding:12px;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;
+  transition:background .15s;}
+.swap-cta-btn:hover{background:var(--v10);}
+.swap-cta-btn span{font-family:'Chivo',sans-serif;font-size:16px;font-weight:700;
+  font-style:italic;color:#fff;text-transform:uppercase;letter-spacing:.02em;}
+
+/* TOKEN SELECTOR MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:500;display:flex;align-items:center;
+  justify-content:center;background:rgba(0,0,0,.40);opacity:0;pointer-events:none;transition:opacity .2s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:#fff;border-radius:16px;box-shadow:0 24px 64px rgba(0,0,0,.18);
+  display:flex;flex-direction:column;overflow:hidden;width:672px;max-height:90vh;}
+.modal-header{display:flex;align-items:center;justify-content:space-between;
+  padding:16px 24px;border-bottom:1px solid #eceef0;flex-shrink:0;}
+.modal-header span{font-family:Inter,sans-serif;font-size:16px;font-weight:700;color:var(--s12);}
+.modal-close{width:28px;height:28px;display:flex;align-items:center;justify-content:center;
+  border-radius:50%;border:none;background:none;cursor:pointer;transition:background .15s;}
+.modal-close:hover{background:var(--s3);}
+.modal-body{display:flex;flex:1;min-height:0;overflow:hidden;}
+.modal-chains{width:212px;background:var(--s3);border-bottom-left-radius:16px;
+  display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;}
+.modal-chains-search{padding:12px 12px 8px;}
+.modal-chains-search-inner{display:flex;align-items:center;gap:8px;background:#fff;
+  border-radius:8px;padding:10px 12px;border:1px solid #e6e8eb;}
+.modal-chains-search-inner input{background:transparent;border:none;outline:none;flex:1;
+  font-family:Inter,sans-serif;font-size:14px;font-weight:500;color:var(--s11);min-width:0;}
+.modal-chains-list{flex:1;overflow-y:auto;padding:0 12px 12px;display:flex;flex-direction:column;gap:2px;}
+.modal-chain-btn{display:flex;align-items:center;gap:8px;width:100%;padding:10px 8px;
+  border-radius:8px;cursor:pointer;border:none;background:none;transition:background .12s;
+  font-family:Inter,sans-serif;font-size:16px;font-weight:500;color:var(--s12);text-align:left;}
+.modal-chain-btn:hover{background:#e6e8eb;}
+.modal-chain-btn.active{background:#dfe3e6;}
+.modal-chain-icon{width:24px;height:24px;border-radius:4px;overflow:hidden;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;}
+.modal-chain-star{color:var(--v9);margin-left:auto;flex-shrink:0;}
+.modal-section-label{padding:4px 12px;font-family:Inter,sans-serif;font-size:14px;
+  font-weight:500;color:var(--s11);margin-top:4px;}
+.modal-tokens{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;}
+.modal-tokens-search{padding:16px 16px 8px;}
+.modal-tokens-search-inner{display:flex;align-items:center;gap:8px;background:var(--s2);
+  border-radius:8px;padding:10px 12px;}
+.modal-tokens-search-inner input{background:transparent;border:none;outline:none;flex:1;
+  font-family:Inter,sans-serif;font-size:14px;font-weight:500;color:var(--s11);min-width:0;}
+.modal-tokens-list{flex:1;overflow-y:auto;}
+.modal-token-row{display:flex;align-items:center;justify-content:space-between;width:100%;
+  padding:10px 16px;border-radius:12px;cursor:pointer;border:none;background:none;
+  transition:background .12s;}
+.modal-token-row:hover{background:var(--s2);}
+.modal-token-left{display:flex;align-items:center;gap:12px;}
+.modal-token-avatar{position:relative;width:40px;height:40px;flex-shrink:0;}
+.modal-token-avatar-main{width:40px;height:40px;border-radius:50%;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:14px;}
+.modal-token-avatar-badge{position:absolute;bottom:0;right:0;width:16px;height:16px;
+  border-radius:4px;border:1px solid #fff;overflow:hidden;background:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:5px;font-weight:700;color:#fff;}
+.modal-token-name{display:flex;flex-direction:column;align-items:flex-start;gap:2px;}
+.modal-token-symbol{font-family:Inter,sans-serif;font-size:16px;font-weight:700;color:var(--s12);}
+.modal-token-desc{font-family:Inter,sans-serif;font-size:12px;font-weight:500;color:var(--s11);
+  display:flex;align-items:center;gap:4px;}
+.modal-token-right{display:flex;flex-direction:column;align-items:flex-end;gap:2px;}
+.modal-token-usd{font-family:Inter,sans-serif;font-size:16px;font-weight:700;color:var(--s12);}
+.modal-token-amount{font-family:Inter,sans-serif;font-size:12px;font-weight:500;color:var(--s11);}
+/* receive token selected state */
+.swap-recv-token-btn{display:flex;align-items:center;gap:4px;background:var(--s3);
+  border-radius:var(--r-full);padding:8px 12px;cursor:pointer;border:none;transition:background .15s;}
+.swap-recv-token-btn:hover{background:#e8eaed;}
+
+/* LOGO STRIP */
+.logos-section{border-top:1px solid var(--s6);background:white;}
+.logos-inner{max-width:1200px;margin:0 auto;padding:28px 52px;}
+.logos-label{font-size:12px;font-weight:500;color:var(--s9);text-align:center;margin-bottom:20px;}
+.logos-row{display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap;}
+.logo-brand{font-size:14px;font-weight:600;color:var(--s7);transition:color .2s;cursor:default;}
+.logo-brand:hover{color:var(--s11);}
+.logos-cta{display:flex;justify-content:center;margin-top:18px;}
+.logos-cta a{font-size:13px;color:var(--v11);font-weight:500;text-decoration:none;
+  display:flex;align-items:center;gap:5px;}
+.logos-cta a:hover{color:var(--v9);}
+
+/* SECTION 1 — CHAIN CALCULATOR */
+.s1{border-top:1px solid var(--s6);background:white;}
+.s1-inner{max-width:1200px;margin:0 auto;padding:88px 52px;}
+.s1-top{display:flex;flex-direction:column;gap:40px;}
+.s1-copy{max-width:560px;}
+.s1-eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--v11);margin-bottom:14px;}
+.s1-h2{font-family:'Chivo',sans-serif;font-size:40px;font-weight:300;
+  letter-spacing:-0.04em;line-height:1.05;margin-bottom:20px;color:var(--s12);}
+.s1-h2 strong{font-weight:700;display:block;}
+.s1-p{font-size:16px;line-height:1.7;font-weight:300;color:var(--s11);max-width:420px;
+  margin-bottom:0;}
+
+/* ── Notion-style calculator card ── */
+.notion-card{
+  border:1px solid var(--s6);border-radius:var(--r-lg);overflow:hidden;
+  background:white;
+  box-shadow:0 1px 2px rgba(0,0,0,.04);
+}
+
+
+/* checkbox area */
+.notion-checks-wrap{padding:20px 20px 16px;}
+.notion-checks-label{
+  font-size:13px;color:var(--s11);margin-bottom:14px;font-weight:400;
+}
+.notion-checks-label a{color:var(--v9);text-decoration:none;}
+.notion-checks-label a:hover{text-decoration:underline;}
+
+/* the 3-col flat grid — exact Notion pattern */
+.notion-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:0;
+}
+.notion-row{
+  display:flex;align-items:center;gap:9px;
+  padding:6px 8px;cursor:pointer;
+  border-radius:5px;
+  transition:background .1s;
+  user-select:none;
+}
+.notion-row:hover{background:var(--s3);}
+
+/* Notion checkbox: square, 16px, rounded 3px */
+.n-cb{
+  width:16px;height:16px;border-radius:3px;
+  border:1.5px solid var(--s7);background:white;
+  flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  transition:all .12s;
+}
+.n-cb svg{display:none;width:9px;height:9px;}
+.notion-row.on .n-cb{background:var(--v9);border-color:var(--v9);}
+.notion-row.on .n-cb svg{display:block;}
+
+.n-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.n-name{font-size:13px;font-weight:500;color:var(--s12);line-height:1;}
+.n-tag{font-size:11px;color:var(--s9);font-weight:400;margin-left:2px;}
+
+/* savings strip — the beige bottom panel */
+.notion-savings{
+  background:var(--s2);
+  border-top:1px solid var(--s6);
+  display:grid;grid-template-columns:repeat(3,1fr);
+}
+.notion-stat{
+  padding:14px 18px;
+  border-right:1px solid var(--s6);
+}
+.notion-stat:last-child{border-right:none;}
+.notion-stat-label{
+  font-size:11px;font-weight:600;color:var(--s11);
+  margin-bottom:5px;letter-spacing:0;
+}
+.notion-stat-val{
+  font-family:'Chivo',sans-serif;
+  font-size:24px;font-weight:700;
+  letter-spacing:-0.03em;color:var(--s12);
+  line-height:1;
+}
+.notion-stat-val.green{color:var(--grass);}
+.notion-stat-sub{font-size:11px;color:var(--s9);margin-top:3px;}
+
+/* tx feed */
+.tx-feed{
+  background:var(--v12);padding:18px 20px;
+  border-top:1px solid var(--s6);
+  min-height:120px;overflow:hidden;
+}
+.tx-feed-label{
+  font-size:10px;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:rgba(219,222,255,.3);
+  margin-bottom:12px;display:flex;align-items:center;gap:6px;
+}
+.tx-feed-dot{
+  width:5px;height:5px;border-radius:50%;background:var(--grass);
+  animation:txpulse 1.8s ease-in-out infinite;
+}
+@keyframes txpulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+.tx-row{
+  display:flex;align-items:center;gap:8px;
+  padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);
+  animation:txSlide .3s ease both;
+}
+.tx-row:last-child{border-bottom:none;}
+@keyframes txSlide{from{opacity:0;transform:translateX(-6px);}to{opacity:1;transform:none;}}
+.tx-from,.tx-to{
+  font-size:10px;font-weight:600;
+  padding:2px 6px;border-radius:var(--r-full);
+  font-family:'DM Mono',monospace;
+}
+.tx-sep{font-size:9px;color:rgba(219,222,255,.25);}
+.tx-token{font-size:11px;color:rgba(219,222,255,.55);flex:1;font-family:'DM Mono',monospace;}
+.tx-speed{font-size:10px;color:var(--grass);font-weight:600;white-space:nowrap;}
+
+@keyframes numFlip{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+.num-anim{animation:numFlip .2s ease both;}
+
+
+
+
+/* cap row */
+.cap-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;min-height:24px;}
+.cap-item{font-size:12px;color:var(--s11);display:flex;align-items:center;gap:6px;
+  padding:4px 10px;border-radius:var(--r-full);background:var(--s2);border:1px solid var(--s6);
+  transition:all .25s;}
+.cap-item.unlocked{color:var(--v12);background:var(--v3);border-color:var(--v5);}
+.cap-item.locked{opacity:.3;}
+.cap-dot{width:6px;height:6px;border-radius:50%;background:var(--s7);flex-shrink:0;transition:background .25s;}
+.cap-item.unlocked .cap-dot{background:var(--grass);}
+
+/* SECTION 2 — DIRECTION C */
+.s2{border-top:1px solid var(--s6);background:var(--s1);}
+.s2-inner{max-width:1200px;margin:0 auto;padding:88px 52px;}
+.s2-eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--v11);margin-bottom:12px;text-align:center;}
+.s2-h2{font-family:'Chivo',sans-serif;font-size:40px;font-weight:300;
+  letter-spacing:-0.04em;text-align:center;color:var(--s12);margin-bottom:40px;line-height:1.05;}
+.s2-h2 em{font-style:italic;color:var(--v9);}
+/* chips */
+.c-chips{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-bottom:48px;}
+.c-chip{font-size:14px;font-weight:500;padding:10px 22px;border-radius:var(--r-full);
+  border:1.5px solid var(--s6);background:white;color:var(--s11);cursor:pointer;
+  transition:all .18s;user-select:none;font-family:Inter,sans-serif;}
+.c-chip:hover{border-color:var(--v6);color:var(--v9);background:var(--v3);}
+.c-chip.selected{border-color:var(--v9);background:var(--v9);color:white;
+  box-shadow:0 2px 12px rgba(70,21,200,.22);}
+/* result card */
+.c-result{border:1px solid var(--s6);border-radius:20px;overflow:hidden;
+  box-shadow:0 2px 8px rgba(0,0,0,.04),0 16px 48px rgba(42,34,110,.06);
+  transition:opacity .3s,filter .3s;}
+.c-result.unselected{opacity:.35;filter:blur(1.5px);pointer-events:none;}
+.c-result-grid{display:grid;grid-template-columns:1fr 1fr;min-height:400px;}
+.c-left{padding:48px 44px;background:white;display:flex;flex-direction:column;}
+.c-right{padding:40px;background:var(--v12);display:flex;align-items:center;justify-content:center;}
+/* persona badge */
+.c-persona{display:flex;align-items:center;gap:10px;margin-bottom:24px;}
+.c-persona-icon{width:36px;height:36px;border-radius:10px;background:var(--v3);
+  display:flex;align-items:center;justify-content:center;color:var(--v9);flex-shrink:0;}
+.c-persona-name{font-size:13px;font-weight:600;color:var(--v11);}
+.c-persona-role{font-size:11px;color:var(--s9);}
+/* content */
+.c-hl{font-family:'Chivo',sans-serif;font-size:30px;font-weight:300;
+  letter-spacing:-0.03em;color:var(--s12);margin-bottom:14px;line-height:1.1;}
+.c-hl strong{font-weight:700;display:block;}
+.c-body{font-size:15px;line-height:1.65;font-weight:300;
+  color:var(--s11);margin-bottom:22px;}
+.c-list{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:32px;}
+.c-list li{font-size:14px;color:var(--s11);display:flex;align-items:baseline;gap:8px;}
+.c-list li::before{content:'→';font-size:11px;color:var(--v9);flex-shrink:0;}
+.c-btn{display:inline-flex;align-items:center;gap:7px;margin-top:auto;
+  font-size:14px;font-weight:600;padding:11px 22px;border-radius:var(--r-md);
+  border:none;background:var(--v9);color:white;cursor:pointer;
+  font-family:Inter,sans-serif;width:fit-content;transition:all .2s;}
+.c-btn:hover{background:var(--v10);}
+/* right panel metrics */
+.c-metrics{width:100%;}
+.c-metric{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:var(--r-xl);padding:20px 22px;margin-bottom:10px;transition:all .3s;}
+.c-metric:last-child{margin-bottom:0;}
+.c-metric-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;}
+.c-metric-label{font-size:11px;font-weight:600;color:rgba(219,222,255,.5);
+  letter-spacing:.06em;text-transform:uppercase;}
+.c-metric-val{font-family:'Chivo',sans-serif;font-size:22px;font-weight:700;
+  letter-spacing:-0.03em;color:white;}
+.c-metric-val.green{color:#6ee58a;}
+.c-metric-bar{height:3px;background:rgba(255,255,255,.1);border-radius:var(--r-full);}
+.c-metric-fill{height:100%;border-radius:var(--r-full);transition:width .5s cubic-bezier(.4,0,.2,1);}
+@keyframes c-fadein{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.c-anim{animation:c-fadein .25s ease both;}
+
+/* SECTION 3 */
+.s3-wrap{background:white;border-top:1px solid var(--s6);padding:72px 52px;}
+.s3-grid{max-width:1200px;margin:0 auto;display:grid;
+  grid-template-columns:repeat(3,1fr);gap:1px;background:var(--s6);
+  border:1px solid var(--s6);border-radius:var(--r-xl);overflow:hidden;}
+.big-stat{background:white;padding:36px 32px;transition:background .18s;}
+.big-stat:hover{background:var(--v3);}
+.big-stat-n{font-family:'Chivo',sans-serif;font-size:48px;font-weight:700;
+  letter-spacing:-0.04em;color:var(--v12);line-height:1;margin-bottom:10px;}
+.big-stat-l{font-size:14px;color:var(--s11);}
+
+/* SECTION 4 */
+.s4{border-top:1px solid var(--s6);background:var(--v12);}
+.s4-inner{max-width:1200px;margin:0 auto;padding:100px 52px;
+  text-align:center;display:flex;flex-direction:column;align-items:center;}
+.s4-eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--v7);margin-bottom:16px;}
+.s4-h2{font-family:'Chivo',sans-serif;font-size:52px;font-weight:300;
+  letter-spacing:-0.04em;color:white;line-height:1.05;
+  margin-bottom:20px;max-width:680px;}
+.s4-h2 em{font-style:italic;color:var(--v7);}
+.s4-h2 strong{font-weight:700;}
+.s4-p{font-size:17px;line-height:1.65;color:rgba(219,222,255,.6);
+  font-weight:300;max-width:500px;margin-bottom:40px;}
+.s4-actions{display:flex;gap:12px;}
+.s4-btn-primary{font-family:Inter,sans-serif;font-size:15px;font-weight:600;
+  padding:13px 28px;border-radius:var(--r-md);border:none;background:white;
+  color:var(--v9);cursor:pointer;transition:all .2s;}
+.s4-btn-primary:hover{background:var(--v3);transform:translateY(-1px);}
+.s4-btn-secondary{font-family:Inter,sans-serif;font-size:15px;font-weight:500;
+  padding:13px 28px;border-radius:var(--r-md);
+  border:1.5px solid rgba(255,255,255,.2);background:transparent;
+  color:rgba(219,222,255,.8);cursor:pointer;transition:all .18s;}
+.s4-btn-secondary:hover{border-color:rgba(255,255,255,.4);color:white;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--s6);background:white;padding:32px 52px;
+  display:flex;align-items:center;justify-content:space-between;}
+.foot-logo{font-family:'Chivo',sans-serif;font-size:17px;font-weight:700;
+  letter-spacing:-0.03em;color:var(--v9);}
+.foot-links{display:flex;gap:28px;list-style:none;}
+.foot-links a{font-size:13px;color:var(--s9);text-decoration:none;transition:color .15s;}
+.foot-links a:hover{color:var(--s12);}
+.foot-copy{font-size:12px;color:var(--s7);}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <!-- Left: Logo + Nav -->
+  <div class="nav-left">
+    <a href="#" class="logo">
+      <!-- RELAY wordmark -->
+      <svg width="90" height="14" viewBox="0 0 88.0365 13.7156" fill="none">
+        <path d="M22.3719 0.0089587H35.0938C35.434 0.0089587 35.6489 0.286493 35.5683 0.626697L34.9326 3.37519C34.8521 3.71539 34.5119 3.99293 34.1717 3.99293H26.8394C26.5081 3.99293 26.1769 4.26151 26.1052 4.59276V4.62857C26.0247 4.95983 26.2306 5.22841 26.5618 5.22841H33.151C33.4912 5.22841 33.7061 5.50594 33.6255 5.84614L33.16 7.87842C33.0794 8.21862 32.7392 8.49616 32.399 8.49616H25.8098C25.4785 8.49616 25.1473 8.76474 25.0757 9.09599C25.004 9.42724 25.21 9.69582 25.5412 9.69582H32.8735C33.2137 9.69582 33.4286 9.97336 33.348 10.3136L32.7034 13.0979C32.6228 13.4381 32.2826 13.7156 31.9424 13.7156H19.2206C18.8804 13.7156 18.6655 13.4381 18.7461 13.0979L21.6199 0.644604C21.7005 0.3044 22.0407 0.0268625 22.3809 0.0268625L22.3719 0.0089587Z" fill="#0D0C0D"/>
+        <path d="M14.7352 0.0089587H1.43147C1.09127 0.0089587 0.751066 0.286493 0.679444 0.626697L0.0348467 3.411C-0.045728 3.7512 0.169137 4.02874 0.509341 4.02874H1.49414C1.80749 4.02874 2.03131 4.31522 1.96864 4.61962L0.0169401 13.0889C-0.0636346 13.4291 0.151231 13.7067 0.491436 13.7067H4.66341C5.00362 13.7067 5.34382 13.4291 5.4244 13.0889L6.2391 9.55258C6.31967 9.21238 6.65987 8.93484 7.00008 8.93484H8.02069C8.26241 8.93484 8.45042 9.06913 8.51309 9.27504L9.81124 13.3844C9.87391 13.5813 10.053 13.7067 10.2768 13.7067H14.6457C15.1202 13.7067 15.532 13.1874 15.3888 12.7845L14.1981 9.38248C14.0906 9.06913 14.3145 8.67521 14.6726 8.51406C16.1856 7.85156 17.3853 6.41912 17.8329 4.47638C18.4685 1.72788 17.1435 0.017912 14.7263 0.017912L14.7352 0.0089587ZM13.0253 4.61067C12.9447 4.95087 12.6045 5.22841 12.2643 5.22841H7.84164C7.50143 5.22841 7.28657 4.95087 7.36714 4.61067C7.44772 4.27046 7.78792 3.99293 8.12812 3.99293H12.5508C12.891 3.99293 13.1059 4.27046 13.0253 4.61067Z" fill="#0D0C0D"/>
+        <path d="M44.2614 0.626697L42.3187 9.06913C42.2381 9.40934 42.4529 9.68687 42.7931 9.68687H49.0063C49.3466 9.68687 49.5614 9.9644 49.4808 10.3046L48.8362 13.0889C48.7557 13.4291 48.4155 13.7067 48.0842 13.7067H36.4636C36.1234 13.7067 35.9085 13.4291 35.9891 13.0889L38.8539 0.644603C38.9345 0.304399 39.2747 0.0268619 39.6149 0.0268619H43.7779C44.1182 0.0268619 44.333 0.304399 44.2524 0.644603L44.2614 0.626697Z" fill="#0D0C0D"/>
+        <path d="M69.1411 12.8293L66.3299 0.376025C66.2762 0.161159 66.0971 0.0179155 65.8554 0.0179155H55.7388C55.3986 0.0179155 55.0584 0.29545 54.9868 0.635654L54.3422 3.41996C54.2616 3.76016 54.4765 4.0377 54.8167 4.0377H55.8283C56.2223 4.0377 56.4461 4.47638 56.2223 4.79868L50.6447 12.8472C50.3672 13.2501 50.5552 13.7156 51.0028 13.7156H55.5508C55.8194 13.7156 56.0969 13.5545 56.2491 13.3038L57.0817 11.9967C57.2339 11.755 57.5025 11.5938 57.7711 11.5938H62.4265C62.6772 11.5938 62.8741 11.746 62.9279 11.9698L63.2233 13.3127C63.277 13.5455 63.474 13.6977 63.7336 13.6977H68.398C68.8456 13.6977 69.2485 13.2322 69.159 12.8293H69.1411ZM61.4686 8.24548H60.1525C59.7317 8.24548 59.5258 7.82471 59.7586 7.43078L60.8598 5.5328C61.1821 4.97773 61.961 4.98669 62.0236 5.5328L62.2385 7.43078C62.2833 7.83366 61.8893 8.24548 61.4686 8.24548Z" fill="#0D0C0D"/>
+        <path d="M87.5658 0.00896037H82.3285C82.1225 0.00896037 81.8987 0.116392 81.7555 0.3044L79.6695 3.16928C79.3919 3.50948 78.8996 3.5632 78.7026 3.26776L76.6345 0.205919C76.5539 0.0805807 76.4107 0.00896037 76.2406 0.00896037H71.7015C71.1733 0.00896037 70.7615 0.644604 71.048 1.02062L75.5512 7.57402C75.6945 7.76203 75.6676 8.04852 75.4975 8.28129L71.8 12.8024C71.4777 13.1963 71.6478 13.6888 72.1044 13.6888H77.0821C77.2881 13.6888 77.5119 13.5813 77.6551 13.3933L87.8702 0.886328C88.1925 0.492407 88.0224 7.07805e-06 87.5658 7.07805e-06V0.00896037Z" fill="#0D0C0D"/>
+      </svg>
+      <!-- Star/asterisk icon -->
+      <svg width="30" height="30" viewBox="0 0 43.834 30" fill="none">
+        <path d="M43.813 14.8341C43.7324 14.3506 43.2758 13.9835 42.7387 13.9835H15.8894C15.6298 13.9835 15.5313 13.7776 15.5134 13.715C15.4955 13.6523 15.4328 13.4374 15.6387 13.2673L29.6945 1.85258C30.1064 1.52133 30.2406 0.948349 29.99 0.518617C29.8378 0.250035 29.5871 0.0709825 29.2827 0.0172661C28.9873 -0.0364504 28.6829 0.035171 28.4501 0.232131L14.457 11.6021C14.2511 11.7722 14.0451 11.6648 13.9914 11.629C13.9377 11.5932 13.7497 11.4589 13.8124 11.1992L15.5581 3.65208C15.6745 3.13282 15.4239 2.60461 14.9762 2.4166C14.6897 2.30021 14.3853 2.30917 14.1078 2.45241C13.8482 2.5867 13.6512 2.83738 13.5885 3.13282L11.5742 11.8528C11.5205 12.0856 11.3235 12.1393 11.2698 12.1572C11.2161 12.1751 11.0101 12.193 10.8669 12.005L7.96623 8.22693C7.64393 7.80615 7.07095 7.66291 6.64122 7.89568C6.37263 8.03892 6.18462 8.2896 6.12195 8.58504C6.05928 8.88048 6.12196 9.18487 6.30997 9.41765L9.32704 13.3479C9.42552 13.4732 9.43447 13.6344 9.3718 13.7687C9.30018 13.9119 9.16589 13.9925 9.01369 13.9925H1.09052C0.553352 13.9925 0.0967622 14.3596 0.0161875 14.843C-0.0375289 15.1474 0.0430436 15.4428 0.248957 15.6756C0.445917 15.9084 0.723458 16.0337 1.02785 16.0337H7.8946C8.15423 16.0337 8.25271 16.2396 8.27061 16.3023C8.28852 16.365 8.35119 16.5798 8.14528 16.7499L3.651 20.4027C3.24812 20.725 3.12278 21.289 3.3466 21.7008C3.48985 21.9694 3.74948 22.1574 4.06282 22.2201C4.36722 22.2827 4.67161 22.2111 4.89543 22.0231L9.32704 18.4152C9.53295 18.245 9.73886 18.3525 9.79258 18.3883C9.84629 18.4241 10.0343 18.5584 9.97163 18.818L8.22585 26.3741C8.10946 26.8665 8.33328 27.3679 8.74511 27.5738C9.02265 27.7081 9.3539 27.7171 9.64038 27.5738C9.92687 27.4395 10.1328 27.1888 10.2044 26.8934L12.2188 18.1734C12.2725 17.9407 12.4694 17.8869 12.5232 17.869C12.5858 17.8601 12.7828 17.8332 12.926 18.0212L21.843 29.615C22.0131 29.8478 22.2906 29.9821 22.586 30C22.604 30 22.6308 30 22.6487 30C22.9352 30 23.2038 29.8836 23.3918 29.6867C23.732 29.3285 23.741 28.7466 23.4187 28.3258L14.457 16.6783C14.3585 16.553 14.3495 16.3918 14.4122 16.2575C14.4838 16.1143 14.6181 16.0337 14.7703 16.0337H42.8103C43.1147 16.0337 43.3922 15.8994 43.5892 15.6756C43.7861 15.4428 43.8667 15.1474 43.822 14.843L43.813 14.8341Z" fill="#4615C8"/>
+      </svg>
+    </a>
+    <ul class="nav-links">
+      <li><a href="swap.html">Swap</a></li>
+      <li><a href="#">Vault</a></li>
+      <li><a href="#">Transactions</a></li>
+    </ul>
+    <button class="nav-more">
+      More
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+  </div>
+
+  <!-- Center: Search -->
+  <div class="nav-search">
+    <div class="nav-search-inner">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#889096" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Search for a token or paste address">
+    </div>
+    <span class="nav-search-kbd">/</span>
+  </div>
+
+  <!-- Right: Wallet -->
+  <div class="nav-wallet">
+    <div class="nav-wallet-icons">
+      <div class="nav-wallet-icon" style="background:#627EEA;color:#fff;">E</div>
+      <div class="nav-wallet-icon" style="background:#F7931A;color:#fff;">B</div>
+      <div class="nav-wallet-icon" style="background:#2775CA;color:#fff;">U</div>
+    </div>
+    <span class="nav-wallet-bal">$5,000</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero-wrap">
+  <div class="hero">
+    <!-- Left: Copy -->
+    <div class="hero-left">
+      <div class="pill">
+        <span class="pill-dot"></span>
+        The fastest crosschain protocol
+      </div>
+      <h1 class="hero-h1">Move anything.<br>Any chain.<br><em>Instantly.</em></h1>
+      <p class="hero-p">Swap, bridge, and transact across 85+ chains in seconds. No friction. No waiting.</p>
+    </div>
+
+    <!-- Right: Swap Widget -->
+    <div class="swap-widget">
+      <!-- Arrow Connector (overlaps border between panels) -->
+      <div class="swap-arrow-connector" id="swapArrowConnector">
+        <button class="swap-arrow-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7e868c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+        </button>
+      </div>
+      <!-- Send Panel -->
+      <div class="swap-panel">
+        <div class="swap-panel-head">
+          <span class="swap-panel-label">Send</span>
+          <button class="swap-addr">
+            <div class="swap-addr-icon">P</div>
+            <span class="swap-addr-text">0xd6...e3ef</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#889096" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="swap-amount-row">
+          <input id="sendAmount" class="swap-amount" type="text" value="0.05" placeholder="0">
+          <button class="swap-token-btn">
+            <div style="position:relative;display:flex;align-items:center;">
+              <div class="swap-token-icon">&#926;</div>
+              <div class="swap-token-chain" style="background:#FF4C0C;color:#fff;">O</div>
+            </div>
+            <div class="swap-token-info">
+              <span class="swap-token-symbol">ETH</span>
+              <span class="swap-token-chain-name">Optimism</span>
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#889096" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+        <div class="swap-fiat-row">
+          <span id="sendFiat" class="swap-fiat">$100.00</span>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="swap-balance">Balance: 0.35</span>
+            <div class="swap-pct-btns">
+              <button class="swap-pct" onclick="setPct(0.2)">20%</button>
+              <button class="swap-pct" onclick="setPct(0.5)">50%</button>
+              <button class="swap-pct" onclick="setPct(1)">MAX</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Receive Panel -->
+      <div class="swap-panel">
+        <div class="swap-panel-head">
+          <span class="swap-panel-label">Receive</span>
+          <button class="swap-addr">
+            <div class="swap-addr-icon">P</div>
+            <span class="swap-addr-text">0xd6...e3ef</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#889096" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="swap-amount-row">
+          <span id="recvAmount" class="swap-amount placeholder">0</span>
+          <div id="recvTokenSlot">
+            <button class="swap-select-token" onclick="openTokenModal()">
+              <span>Select Token</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="swap-fiat-row">
+          <span id="recvFiat" class="swap-fiat">$0</span>
+        </div>
+      </div>
+
+      <!-- Get Started Button -->
+      <button class="swap-cta-btn" onclick="goToSwap()">
+        <span>Get Started</span>
+      </button>
+    </div>
+
+    <!-- Token Selector Modal -->
+    <div id="tokenModal" class="modal-overlay" onclick="if(event.target===this)closeTokenModal()">
+      <div class="modal">
+        <div class="modal-header">
+          <span>Select Token</span>
+          <button class="modal-close" onclick="closeTokenModal()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#889096" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Left: Chain sidebar -->
+          <div class="modal-chains">
+            <div class="modal-chains-search">
+              <div class="modal-chains-search-inner">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#889096" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input id="chainSearchInput" type="text" placeholder="Search chain" oninput="filterChains()">
+              </div>
+            </div>
+            <div class="modal-chains-list" id="chainList"></div>
+          </div>
+          <!-- Right: Token list -->
+          <div class="modal-tokens">
+            <div class="modal-tokens-search">
+              <div class="modal-tokens-search-inner">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#889096" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input id="tokenSearchInput" type="text" placeholder="Search for a token or paste address" oninput="filterTokens()">
+              </div>
+            </div>
+            <div class="modal-tokens-list" id="tokenList"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOGO STRIP -->
+<div class="logos-section">
+  <div class="logos-inner">
+    <div class="logos-label">Trusted by</div>
+    <div class="logos-row">
+      <span class="logo-brand">MetaMask</span>
+      <span class="logo-brand">Phantom</span>
+      <span class="logo-brand">Coinbase</span>
+      <span class="logo-brand">OKX</span>
+      <span class="logo-brand">OpenSea</span>
+      <span class="logo-brand">Li.Fi</span>
+      <span class="logo-brand">Infinex</span>
+      <span class="logo-brand">Fomo</span>
+      <span class="logo-brand">Elsa</span>
+    </div>
+    <div class="logos-cta"><a href="#">Ecosystem &rarr;</a></div>
+  </div>
+</div>
+
+<!-- SECTION 1 -->
+<div class="s1">
+  <div class="s1-inner">
+    <div class="s1-top">
+
+      <!-- Copy -->
+      <div class="s1-copy">
+        <div class="s1-eyebrow">How it works</div>
+        <h2 class="s1-h2">Chains are infrastructure.<br><strong>Not your problem.</strong></h2>
+        <p class="s1-p">Relay sits between applications and blockchains &mdash; routing, executing, and settling crosschain transactions in the background. Whether you&rsquo;re a user or a developer, chain complexity disappears. Onchain money that just works.</p>
+      </div>
+
+      <!-- Right: Notion-style calculator card -->
+      <div class="notion-card">
+
+        <!-- checkboxes -->
+        <div class="notion-checks-wrap">
+          <div class="notion-checks-label">Select your chains. Calculate what Relay enables you.</div>
+          <div class="notion-grid" id="chainChecks">
+
+            <div class="notion-row on" data-chain="ethereum" onclick="toggleChain(this)">
+              <div class="n-cb"><svg viewBox="0 0 9 9" fill="none"><path d="M1 4.5l2.5 2.5 4.5-4.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="n-dot" style="background:#627EEA"></span>
+              <span class="n-name">Ethereum</span><span class="n-tag">EVM</span>
+            </div>
+
+            <div class="notion-row on" data-chain="base" onclick="toggleChain(this)">
+              <div class="n-cb"><svg viewBox="0 0 9 9" fill="none"><path d="M1 4.5l2.5 2.5 4.5-4.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="n-dot" style="background:#0052FF"></span>
+              <span class="n-name">Base</span><span class="n-tag">EVM</span>
+            </div>
+
+            <div class="notion-row on" data-chain="arbitrum" onclick="toggleChain(this)">
+              <div class="n-cb"><svg viewBox="0 0 9 9" fill="none"><path d="M1 4.5l2.5 2.5 4.5-4.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="n-dot" style="background:#28A0F0"></span>
+              <span class="n-name">Arbitrum</span><span class="n-tag">EVM</span>
+            </div>
+
+            <div class="notion-row" data-chain="solana" onclick="toggleChain(this)">
+              <div class="n-cb"><svg viewBox="0 0 9 9" fill="none"><path d="M1 4.5l2.5 2.5 4.5-4.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="n-dot" style="background:#9945FF"></span>
+              <span class="n-name">Solana</span><span class="n-tag">SVM</span>
+            </div>
+
+            <div class="notion-row" data-chain="optimism" onclick="toggleChain(this)">
+              <div class="n-cb"><svg viewBox="0 0 9 9" fill="none"><path d="M1 4.5l2.5 2.5 4.5-4.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="n-dot" style="background:#FF4C0C"></span>
+              <span class="n-name">Optimism</span><span class="n-tag">EVM</span>
+            </div>
+
+            <div class="notion-row" data-chain="bitcoin" onclick="toggleChain(this)">
+              <div class="n-cb"><svg viewBox="0 0 9 9" fill="none"><path d="M1 4.5l2.5 2.5 4.5-4.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="n-dot" style="background:#F7931A"></span>
+              <span class="n-name">Bitcoin</span><span class="n-tag">UTXO</span>
+            </div>
+
+            <div class="notion-row" data-chain="polygon" onclick="toggleChain(this)">
+              <div class="n-cb"><svg viewBox="0 0 9 9" fill="none"><path d="M1 4.5l2.5 2.5 4.5-4.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="n-dot" style="background:#8247E5"></span>
+              <span class="n-name">Polygon</span><span class="n-tag">EVM</span>
+            </div>
+
+            <div class="notion-row" data-chain="avalanche" onclick="toggleChain(this)">
+              <div class="n-cb"><svg viewBox="0 0 9 9" fill="none"><path d="M1 4.5l2.5 2.5 4.5-4.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="n-dot" style="background:#E84142"></span>
+              <span class="n-name">Avalanche</span><span class="n-tag">EVM</span>
+            </div>
+
+            <div class="notion-row" data-chain="zksync" onclick="toggleChain(this)">
+              <div class="n-cb"><svg viewBox="0 0 9 9" fill="none"><path d="M1 4.5l2.5 2.5 4.5-4.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <span class="n-dot" style="background:#4E529A"></span>
+              <span class="n-name">zkSync</span><span class="n-tag">EVM</span>
+            </div>
+
+          </div>
+        </div>
+          <div style="margin-top:12px;padding:10px 8px 0;border-top:1px solid #efefef;display:flex;align-items:center;gap:8px;">
+            <div style="display:flex;gap:-3px;">
+              <span style="width:18px;height:18px;border-radius:50%;background:#627EEA;border:2px solid white;display:inline-block;margin-right:-5px;"></span>
+              <span style="width:18px;height:18px;border-radius:50%;background:#9945FF;border:2px solid white;display:inline-block;margin-right:-5px;"></span>
+              <span style="width:18px;height:18px;border-radius:50%;background:#F7931A;border:2px solid white;display:inline-block;margin-right:-5px;"></span>
+              <span style="width:18px;height:18px;border-radius:50%;background:#28A0F0;border:2px solid white;display:inline-block;margin-right:-5px;"></span>
+              <span style="width:18px;height:18px;border-radius:50%;background:var(--s6);border:2px solid white;display:inline-flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:var(--s9);">+</span>
+            </div>
+            <span style="font-size:12px;color:var(--s9);">Relay covers <strong style="color:var(--s12);">85+ chains</strong> in total &mdash; everything above and far beyond.</span>
+          </div>
+
+        <!-- savings strip -->
+        <div class="notion-savings">
+          <div class="notion-stat">
+            <div class="notion-stat-label">Reachable wallets</div>
+            <div class="notion-stat-val" id="resWallets">313M+</div>
+            <div class="notion-stat-sub" id="resWalletsSub">across 3 chains</div>
+          </div>
+          <div class="notion-stat">
+            <div class="notion-stat-label">Infra cost saved / mo</div>
+            <div class="notion-stat-val green" id="resInfra">$14k</div>
+            <div class="notion-stat-sub">vs building it yourself</div>
+          </div>
+          <div class="notion-stat">
+            <div class="notion-stat-label">Eng time saved</div>
+            <div class="notion-stat-val green" id="resWeeks">26 weeks</div>
+            <div class="notion-stat-sub" id="resWeeksSub">one integration</div>
+          </div>
+        </div>
+
+        <!-- live tx feed -->
+        <div class="tx-feed">
+          <div class="tx-feed-label">
+            <span class="tx-feed-dot"></span>Live transactions on your chains
+          </div>
+          <div id="txFeed"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+const CHAIN_DATA = {
+  ethereum: { name:'ETH',  color:'#627EEA', vm:'EVM',  wallets:230, infraCost:8200, engWeeks:14 },
+  base:     { name:'BASE', color:'#0052FF', vm:'EVM',  wallets:45,  infraCost:3100, engWeeks:6  },
+  arbitrum: { name:'ARB',  color:'#28A0F0', vm:'EVM',  wallets:38,  infraCost:2800, engWeeks:6  },
+  solana:   { name:'SOL',  color:'#9945FF', vm:'SVM',  wallets:120, infraCost:5400, engWeeks:12 },
+  optimism: { name:'OP',   color:'#FF4C0C', vm:'EVM',  wallets:22,  infraCost:2400, engWeeks:5  },
+  bitcoin:  { name:'BTC',  color:'#F7931A', vm:'UTXO', wallets:190, infraCost:9600, engWeeks:18 },
+  polygon:  { name:'POL',  color:'#8247E5', vm:'EVM',  wallets:55,  infraCost:2600, engWeeks:5  },
+  avalanche:{ name:'AVAX', color:'#E84142', vm:'EVM',  wallets:18,  infraCost:2200, engWeeks:4  },
+  zksync:   { name:'ZKS',  color:'#4E529A', vm:'EVM',  wallets:12,  infraCost:2000, engWeeks:4  },
+};
+const TOKENS = ['ETH','USDC','USDT','SOL','BTC','MATIC','ARB','OP','AVAX'];
+let selected = new Set(['ethereum','base','arbitrum']);
+let feedTimer = null;
+
+function fmt(n){ return n>=1000?'$'+(n/1000).toFixed(0)+'k':'$'+n; }
+function fmtW(n){ return n>=1000?(n/1000).toFixed(1)+'B+':n+'M+'; }
+function flash(id,val){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.classList.remove('num-anim');
+  void el.offsetWidth;
+  el.textContent=val;
+  el.classList.add('num-anim');
+}
+
+function update(){
+  const sel=[...selected];
+  const wallets=sel.reduce((a,c)=>a+(CHAIN_DATA[c]?.wallets||0),0);
+  const infra  =sel.reduce((a,c)=>a+(CHAIN_DATA[c]?.infraCost||0),0);
+  const weeks  =sel.reduce((a,c)=>a+(CHAIN_DATA[c]?.engWeeks||0),0);
+  flash('resWallets', sel.length?fmtW(wallets):'—');
+  flash('resInfra',   sel.length?fmt(infra):'—');
+  flash('resWeeks',   sel.length?weeks+' weeks':'—');
+  const sub=document.getElementById('resWalletsSub');
+  if(sub) sub.textContent=sel.length===1?'on '+(CHAIN_DATA[sel[0]]?.name||''):'across '+sel.length+' chains';
+  const wsub=document.getElementById('resWeeksSub');
+  if(wsub) wsub.textContent=sel.length?'one Relay integration vs '+weeks+' weeks':'one integration';
+  renderFeed(sel);
+}
+
+function makeTx(sel){
+  if(sel.length<2) return null;
+  const from=sel[Math.floor(Math.random()*sel.length)];
+  let to=sel[Math.floor(Math.random()*sel.length)];
+  let tries=0;
+  while(to===from&&sel.length>1&&tries++<5) to=sel[Math.floor(Math.random()*sel.length)];
+  const token=TOKENS[Math.floor(Math.random()*TOKENS.length)];
+  const amt=(Math.random()*9+0.1).toFixed(2);
+  const ms=(Math.random()*1.4+0.4).toFixed(1);
+  const fc=CHAIN_DATA[from].color, tc=CHAIN_DATA[to].color;
+  const fn=CHAIN_DATA[from].name, tn=CHAIN_DATA[to].name;
+  return `<div class="tx-row">
+    <span class="tx-from" style="background:${fc}20;color:${fc}">${fn}</span>
+    <span class="tx-sep">→</span>
+    <span class="tx-to" style="background:${tc}20;color:${tc}">${tn}</span>
+    <span class="tx-token">${amt} ${token}</span>
+    <span class="tx-speed">⚡${ms}s</span>
+  </div>`;
+}
+
+function renderFeed(sel){
+  if(feedTimer){ clearInterval(feedTimer); feedTimer=null; }
+  const feed=document.getElementById('txFeed');
+  if(!feed) return;
+  if(sel.length<2){
+    feed.innerHTML='<div style="font-size:11px;color:rgba(219,222,255,.25);padding:4px 0">Select 2+ chains to see live routing</div>';
+    return;
+  }
+  feed.innerHTML=[makeTx(sel),makeTx(sel),makeTx(sel)].filter(Boolean).join('');
+  feedTimer=setInterval(()=>{
+    const rows=feed.querySelectorAll('.tx-row');
+    if(rows.length>=4) rows[0].remove();
+    const row=makeTx([...selected]);
+    if(row) feed.insertAdjacentHTML('beforeend',row);
+  },1800);
+}
+
+window.toggleChain=function(el){
+  const c=el.dataset.chain;
+  if(selected.has(c)){selected.delete(c);el.classList.remove('on');}
+  else{selected.add(c);el.classList.add('on');}
+  update();
+};
+
+update();
+})();
+</script>
+
+<!-- SECTION 2 — AUDIENCES -->
+<div class="s2">
+  <div class="s2-inner">
+    <div class="s2-eyebrow">For everyone</div>
+    <h2 class="s2-h2">Whether you&rsquo;re spending or <em>building.</em></h2>
+
+    <div class="c-chips">
+      <button class="c-chip" data-id="user" onclick="setPersona('user')">&#128666; I&rsquo;m a user</button>
+      <button class="c-chip" data-id="wallet" onclick="setPersona('wallet')">&#128274; Wallet app</button>
+      <button class="c-chip" data-id="defi" onclick="setPersona('defi')">&#9889; DeFi protocol</button>
+      <button class="c-chip" data-id="payments" onclick="setPersona('payments')">&#128179; Payment flow</button>
+      <button class="c-chip" data-id="nft" onclick="setPersona('nft')">&#128444; NFT / marketplace</button>
+    </div>
+
+    <div class="c-result unselected" id="cResult">
+      <div class="c-result-grid">
+        <div class="c-left">
+          <div class="c-persona">
+            <div class="c-persona-icon" id="cIcon"></div>
+            <div>
+              <div class="c-persona-name" id="cPersonaName"></div>
+              <div class="c-persona-role" id="cPersonaRole"></div>
+            </div>
+          </div>
+          <div class="c-hl" id="cHl"></div>
+          <p class="c-body" id="cBody"></p>
+          <ul class="c-list" id="cList"></ul>
+          <button class="c-btn" id="cBtn"></button>
+        </div>
+        <div class="c-right">
+          <div class="c-metrics" id="cMetrics"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+const personas = {
+  user:{
+    name:'User',role:'Spending onchain',
+    icon:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M2 13c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>',
+    hl:'Spend what you hold,<br><strong>wherever you need it.</strong>',
+    body:"You shouldn\u2019t need to think about which chain your money is on. Relay gets you where you need to go.",
+    bullets:['Swap & bridge tokens across any chain instantly','Best rates, automatically sourced and routed','No signups, no KYC, no waiting periods','Works with any wallet you already use'],
+    cta:'Try the swap widget \u2192',
+    metrics:[{label:'Chains covered',val:'85+',fill:100,green:false},{label:'Settlement time',val:'<2s',fill:95,green:true},{label:'Fees',val:'0.10%',fill:10,green:true}]
+  },
+  wallet:{
+    name:'Wallet Developer',role:'Building user-facing wallet',
+    icon:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M2 7h12" stroke="currentColor" stroke-width="1.4"/><circle cx="11" cy="10" r="1" fill="currentColor"/></svg>',
+    hl:'One integration.<br><strong>Connect your users to the whole onchain economy.</strong>',
+    body:'Add crosschain capability to your wallet, app, or payment flow with our API. Relay handles routing and settlement \u2014 you just ship.',
+    bullets:['API and SDK','Ready in minutes','Production-ready, battle-tested infrastructure','Reach users across 85+ chains and beyond'],
+    cta:'Read the docs \u2192',
+    metrics:[{label:'Chains covered',val:'85+',fill:100,green:false},{label:'Integration time',val:'~1 day',fill:20,green:true},{label:'Volume moved',val:'$20B+',fill:100,green:false}]
+  },
+  defi:{
+    name:'DeFi Protocol',role:'Building liquidity or yield products',
+    icon:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12l4-4 3 3 5-7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    hl:'Tap liquidity<br><strong>on every chain at once.</strong>',
+    body:"Your protocol shouldn\u2019t care which chain the capital is on. Relay routes and settles crosschain transactions so your users deposit, swap, and earn without friction.",
+    bullets:['Route capital from any chain to your protocol','Atomic crosschain transactions','No bridge UX \u2014 invisible to your users','Battle-tested with $20B in volume'],
+    cta:'Read the docs \u2192',
+    metrics:[{label:'Total volume routed',val:'$20B+',fill:100,green:false},{label:'Uptime SLA',val:'99.9%',fill:99,green:true},{label:'Chains supported',val:'85+',fill:100,green:false}]
+  },
+  payments:{
+    name:'Payment Flow',role:'Building checkout or payment infra',
+    icon:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M2 7h12" stroke="currentColor" stroke-width="1.4"/><path d="M5 10h2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>',
+    hl:'Accept any token.<br><strong>Settle how you want.</strong>',
+    body:'Let your customers pay with whatever they hold \u2014 any token, any chain. Relay converts and settles to your preferred currency in seconds, invisibly.',
+    bullets:['Accept ETH, USDC, SOL, and 1000+ tokens','Settle to any chain or currency automatically','Sub-2s confirmation, no pending states','No new wallet required for your customers'],
+    cta:'Explore payment integration \u2192',
+    metrics:[{label:'Tokens accepted',val:'1000+',fill:100,green:false},{label:'Settlement time',val:'<2s',fill:95,green:true},{label:'Fee',val:'0.10%',fill:10,green:true}]
+  },
+  nft:{
+    name:'NFT / Marketplace',role:'Building NFT or digital asset products',
+    icon:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><circle cx="5.5" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M2 10l4-3 3 2.5 2-2 3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    hl:'Let buyers pay<br><strong>from any chain, any wallet.</strong>',
+    body:"A buyer on Solana shouldn\u2019t miss a drop on Ethereum. Relay handles crosschain checkout so your sales aren\u2019t limited by which chain your buyers are on.",
+    bullets:['Crosschain checkout in one click','OpenSea already uses Relay \u2014 so can you','Buyer pays from any chain, you receive on yours','No bridge UX \u2014 just a buy button'],
+    cta:'See marketplace integration \u2192',
+    metrics:[{label:'Crosschain pairs',val:'7,000+',fill:100,green:false},{label:'Time to checkout',val:'<2s',fill:95,green:true},{label:'Integrations live',val:'OpenSea+',fill:60,green:false}]
+  }
+};
+
+window.setPersona = function(id){
+  document.querySelectorAll('.c-chip').forEach(c=>c.classList.remove('selected'));
+  document.querySelector('[data-id="'+id+'"]').classList.add('selected');
+  const p = personas[id];
+  const result = document.getElementById('cResult');
+  result.classList.remove('unselected','c-anim');
+  void result.offsetWidth;
+  result.classList.add('c-anim');
+  document.getElementById('cIcon').innerHTML = p.icon;
+  document.getElementById('cPersonaName').textContent = p.name;
+  document.getElementById('cPersonaRole').textContent = p.role;
+  document.getElementById('cHl').innerHTML = p.hl;
+  document.getElementById('cBody').textContent = p.body;
+  document.getElementById('cBtn').textContent = p.cta;
+  document.getElementById('cList').innerHTML = p.bullets.map(b=>'<li>'+b+'</li>').join('');
+  document.getElementById('cMetrics').innerHTML = p.metrics.map(m=>`
+    <div class="c-metric">
+      <div class="c-metric-top">
+        <span class="c-metric-label">${m.label}</span>
+        <span class="c-metric-val${m.green?' green':''}">${m.val}</span>
+      </div>
+      <div class="c-metric-bar">
+        <div class="c-metric-fill" style="width:${m.fill}%;background:${m.green?'#6ee58a':'var(--v7)'}"></div>
+      </div>
+    </div>`).join('');
+  setTimeout(()=>result.classList.remove('c-anim'),300);
+};
+// pre-select user
+setPersona('user');
+})();
+</script>
+
+<!-- SECTION 3 — STATS -->
+<div class="s3-wrap">
+  <div class="s3-grid">
+    <div class="big-stat"><div class="big-stat-n">$20B</div><div class="big-stat-l">Total volume moved</div></div>
+    <div class="big-stat"><div class="big-stat-n">85+</div><div class="big-stat-l">Chains supported</div></div>
+    <div class="big-stat"><div class="big-stat-n">&lt;2s</div><div class="big-stat-l">Average execution time</div></div>
+  </div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="s4">
+  <div class="s4-inner">
+    <div class="s4-eyebrow">Infrastructure</div>
+    <h2 class="s4-h2">The interoperability layer<br>for the <em>onchain economy.</em></h2>
+    <p class="s4-p">Whether you&rsquo;re moving funds across chains or building the next generation of financial products &mdash; Relay is the infrastructure underneath.</p>
+    <div class="s4-actions">
+      <button class="s4-btn-primary">Start swapping</button>
+      <button class="s4-btn-secondary">Build with Relay &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-logo">Relay</div>
+  <ul class="foot-links">
+    <li><a href="#">Documentation</a></li>
+    <li><a href="#">Ecosystem</a></li>
+    <li><a href="#">GitHub</a></li>
+    <li><a href="#">Twitter</a></li>
+    <li><a href="#">Discord</a></li>
+    <li><a href="#" style="color:var(--v11)">Jobs</a></li>
+    <li><a href="#">Privacy</a></li>
+  </ul>
+  <div class="foot-copy">&copy; 2026 Relay Protocol</div>
+</footer>
+
+<script>
+// ── Swap Widget Logic ─────────────────────────────────────────────────────
+(function(){
+const ETH_PRICE = 2000;
+const BALANCE = 0.35;
+let selectedToken = null;
+
+// ── Token & chain data ──
+const CHAINS = {
+  starred: [
+    { id:'bitcoin', name:'Bitcoin', bg:'#F7931A' },
+    { id:'base',    name:'Base',    bg:'#0052FF' },
+    { id:'solana',  name:'Solana',  bg:'#9945FF' },
+  ],
+  az: [
+    { id:'blast',     name:'Blast',     bg:'#FCFC03', dark:true },
+    { id:'degen',     name:'Degen',     bg:'#A36EFD' },
+    { id:'linea',     name:'Linea',     bg:'#61DFFF' },
+    { id:'zora',      name:'Zora',      bg:'#2B2929' },
+    { id:'gravity',   name:'Gravity',   bg:'#191DFB' },
+  ]
+};
+let selectedChain = 'base';
+
+const YOUR_TOKENS = [
+  { id:'eth-op',  symbol:'ETH',  displayName:'Ethereum on Optimism',          chainName:'Optimism', bg:'#627EEA', chainBg:'#FF4C0C', priceUsd:2000, usd:'$50.00',  amount:'0.025 ETH' },
+  { id:'usdc-op', symbol:'USDC', displayName:'USD Coin on Optimism',          chainName:'Optimism', bg:'#2775CA', chainBg:'#FF4C0C', priceUsd:1,    usd:'$120.00', amount:'120 USDC' },
+  { id:'weth-op', symbol:'WETH', displayName:'Wrapped Ethereum on Optimism',  chainName:'Optimism', bg:'#627EEA', chainBg:'#FF4C0C', priceUsd:2000, usd:'$300.00', amount:'0.15 WETH' },
+];
+const VOLUME_TOKENS = [
+  { id:'blerf-base', symbol:'BLERF', displayName:'Blerf on Base',               chainName:'Base',     bg:'#FF69B4', chainBg:'#0052FF', priceUsd:0.0023, usd:null, amount:null, warn:true },
+  { id:'weth-base',  symbol:'WETH',  displayName:'Wrapped Ethereum on Base',    chainName:'Base',     bg:'#627EEA', chainBg:'#0052FF', priceUsd:2000 },
+  { id:'usdc-base',  symbol:'USDC',  displayName:'USD Coin on Base',            chainName:'Base',     bg:'#2775CA', chainBg:'#0052FF', priceUsd:1 },
+  { id:'eth-arb',    symbol:'ETH',   displayName:'Ethereum on Arbitrum',        chainName:'Arbitrum', bg:'#627EEA', chainBg:'#28A0F0', priceUsd:2000 },
+];
+
+// ── Position arrow connector at boundary of Send panel ──
+(function positionArrow(){
+  const widget = document.querySelector('.swap-widget');
+  const panels = widget.querySelectorAll('.swap-panel');
+  const arrow  = document.getElementById('swapArrowConnector');
+  if(panels.length >= 2 && arrow){
+    const sendPanel = panels[0];
+    const top = sendPanel.offsetTop + sendPanel.offsetHeight + 4 - 16; // 4=half gap, 16=half button
+    arrow.style.top = top + 'px';
+  }
+})();
+
+// ── DOM refs ──
+const sendInput   = document.getElementById('sendAmount');
+const sendFiat    = document.getElementById('sendFiat');
+const recvAmount  = document.getElementById('recvAmount');
+const recvFiat    = document.getElementById('recvFiat');
+const recvSlot    = document.getElementById('recvTokenSlot');
+const modal       = document.getElementById('tokenModal');
+const chainList   = document.getElementById('chainList');
+const tokenList   = document.getElementById('tokenList');
+const chainSearch = document.getElementById('chainSearchInput');
+const tokenSearch = document.getElementById('tokenSearchInput');
+
+// ── Helpers ──
+function fmt(n, maxDec){ return n.toLocaleString('en-US',{maximumFractionDigits:maxDec}); }
+
+function computeReceive(sendEth, token){
+  const usd = sendEth * ETH_PRICE;
+  const raw = usd / token.priceUsd;
+  if(raw>=1000) return fmt(raw,2);
+  if(raw>=1)    return fmt(raw,4);
+  return raw.toLocaleString('en-US',{maximumSignificantDigits:4});
+}
+
+function updateWidget(){
+  const val = parseFloat(sendInput.value) || 0;
+  sendFiat.textContent = '$' + fmt(val*ETH_PRICE, 2);
+  if(selectedToken){
+    const recv = computeReceive(val, selectedToken);
+    recvAmount.textContent = recv;
+    recvAmount.className = 'swap-amount';
+    const recvUsd = parseFloat(recv.replace(/,/g,'')) * selectedToken.priceUsd;
+    recvFiat.textContent = '$' + fmt(recvUsd, 2);
+  } else {
+    recvAmount.textContent = '0';
+    recvAmount.className = 'swap-amount placeholder';
+    recvFiat.textContent = '$0';
+  }
+}
+
+function renderRecvButton(){
+  if(selectedToken){
+    recvSlot.innerHTML = `
+      <button class="swap-recv-token-btn" onclick="openTokenModal()">
+        <div style="position:relative;display:flex;align-items:center;">
+          <div class="swap-token-icon" style="background:${selectedToken.bg}">${selectedToken.symbol[0]}</div>
+          <div class="swap-token-chain" style="background:${selectedToken.chainBg};color:#fff;">${selectedToken.chainName[0]}</div>
+        </div>
+        <div class="swap-token-info">
+          <span class="swap-token-symbol">${selectedToken.symbol}</span>
+          <span class="swap-token-chain-name">${selectedToken.chainName}</span>
+        </div>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#889096" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </button>`;
+  } else {
+    recvSlot.innerHTML = `
+      <button class="swap-select-token" onclick="openTokenModal()">
+        <span>Select Token</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </button>`;
+  }
+}
+
+// ── Percentage buttons ──
+window.setPct = function(pct){
+  sendInput.value = (BALANCE * pct).toFixed(4).replace(/\.?0+$/,'');
+  if(pct===1) sendInput.value = BALANCE.toString();
+  updateWidget();
+};
+
+// ── Send input listener ──
+sendInput.addEventListener('input', updateWidget);
+
+// ── Modal: open / close ──
+window.openTokenModal = function(){
+  chainSearch.value = '';
+  tokenSearch.value = '';
+  renderChains();
+  renderTokens();
+  modal.classList.add('open');
+};
+window.closeTokenModal = function(){
+  modal.classList.remove('open');
+};
+
+// ── Modal: chain list ──
+function renderChains(){
+  const q = chainSearch.value.toLowerCase();
+  let html = '';
+  // All chains
+  html += `<button class="modal-chain-btn${selectedChain==='all'?' active':''}" onclick="selectChain('all')">
+    <div class="modal-chain-icon" style="background:#888;">&#8776;</div> All Chains</button>`;
+  // Starred label
+  html += '<div class="modal-section-label">Starred chains</div>';
+  CHAINS.starred.filter(c=>c.name.toLowerCase().includes(q)).forEach(c=>{
+    html += `<button class="modal-chain-btn${selectedChain===c.id?' active':''}" onclick="selectChain('${c.id}')">
+      <div class="modal-chain-icon" style="background:${c.bg}">${c.name[0]}</div> ${c.name}
+      <span class="modal-chain-star">&#9733;</span></button>`;
+  });
+  // A-Z label
+  html += '<div class="modal-section-label">Chains A-Z</div>';
+  CHAINS.az.filter(c=>c.name.toLowerCase().includes(q)).forEach(c=>{
+    html += `<button class="modal-chain-btn${selectedChain===c.id?' active':''}" onclick="selectChain('${c.id}')">
+      <div class="modal-chain-icon" style="background:${c.bg};${c.dark?'color:#000;':''}">${c.name[0]}</div> ${c.name}</button>`;
+  });
+  chainList.innerHTML = html;
+}
+window.selectChain = function(id){
+  selectedChain = id;
+  renderChains();
+};
+window.filterChains = renderChains;
+
+// ── Modal: token list ──
+function renderTokens(){
+  const q = tokenSearch.value.toLowerCase();
+  function matchToken(t){ return t.symbol.toLowerCase().includes(q) || t.displayName.toLowerCase().includes(q); }
+  function tokenRow(t){
+    const warnIcon = t.warn ? ' <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c1c8cd" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>' : '';
+    const right = t.usd ? `<div class="modal-token-right"><span class="modal-token-usd">${t.usd}</span><span class="modal-token-amount">${t.amount}</span></div>` : '';
+    return `<button class="modal-token-row" onclick="pickToken('${t.id}')">
+      <div class="modal-token-left">
+        <div class="modal-token-avatar">
+          <div class="modal-token-avatar-main" style="background:${t.bg}">${t.symbol[0]}</div>
+          <div class="modal-token-avatar-badge" style="background:${t.chainBg}">${t.chainName[0]}</div>
+        </div>
+        <div class="modal-token-name">
+          <span class="modal-token-symbol">${t.symbol}</span>
+          <span class="modal-token-desc">${t.displayName}${warnIcon}</span>
+        </div>
+      </div>
+      ${right}
+    </button>`;
+  }
+  let html = '<div class="modal-section-label" style="padding:4px 16px;">Your Tokens</div>';
+  YOUR_TOKENS.filter(matchToken).forEach(t=>{ html += tokenRow(t); });
+  html += '<div class="modal-section-label" style="padding:4px 16px;margin-top:8px;">Tokens by 24H volume</div>';
+  VOLUME_TOKENS.filter(matchToken).forEach(t=>{ html += tokenRow(t); });
+  tokenList.innerHTML = html;
+}
+window.filterTokens = renderTokens;
+
+// ── Token lookup map ──
+const allTokens = {};
+YOUR_TOKENS.concat(VOLUME_TOKENS).forEach(t=>{ allTokens[t.id] = t; });
+
+window.pickToken = function(id){
+  selectedToken = allTokens[id];
+  closeTokenModal();
+  renderRecvButton();
+  updateWidget();
+};
+
+// ── Navigate to Swap Page with state ──
+window.goToSwap = function(){
+  const amount = sendInput.value;
+  const tokenId = selectedToken ? selectedToken.id : '';
+  const params = new URLSearchParams();
+  if(amount) params.set('sendAmount', amount);
+  if(tokenId) params.set('receiveToken', tokenId);
+  window.location.href = 'swap.html' + (params.toString() ? '?' + params.toString() : '');
+};
+
+// Init
+updateWidget();
+})();
+</script>
+
+</body>
+</html>
