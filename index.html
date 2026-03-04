@@ -856,15 +856,13 @@ update();
 <!-- SECTION 2 — AUDIENCES -->
 <div class="s2">
   <div class="s2-inner">
-    <div class="s2-eyebrow">For everyone</div>
-    <h2 class="s2-h2">Whether you&rsquo;re spending or <em>building.</em></h2>
+    <div class="s2-eyebrow">Solutions</div>
+    <h2 class="s2-h2">Built for the teams that move <em>onchain money.</em></h2>
 
     <div class="c-chips">
-      <button class="c-chip" data-id="user" onclick="setPersona('user')">&#128666; I&rsquo;m a user</button>
-      <button class="c-chip" data-id="wallet" onclick="setPersona('wallet')">&#128274; Wallet app</button>
-      <button class="c-chip" data-id="defi" onclick="setPersona('defi')">&#9889; DeFi protocol</button>
-      <button class="c-chip" data-id="payments" onclick="setPersona('payments')">&#128179; Payment flow</button>
-      <button class="c-chip" data-id="nft" onclick="setPersona('nft')">&#128444; NFT / marketplace</button>
+      <button class="c-chip" data-id="wallets" onclick="setPersona('wallets')">&#128274; Wallets</button>
+      <button class="c-chip" data-id="apps" onclick="setPersona('apps')">&#9889; Multichain Apps</button>
+      <button class="c-chip" data-id="chains" onclick="setPersona('chains')">&#9939; Chains</button>
     </div>
 
     <div class="c-result unselected" id="cResult">
@@ -893,50 +891,32 @@ update();
 <script>
 (function(){
 const personas = {
-  user:{
-    name:'User',role:'Spending onchain',
-    icon:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M2 13c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>',
-    hl:'Spend what you hold,<br><strong>wherever you need it.</strong>',
-    body:"You shouldn\u2019t need to think about which chain your money is on. Relay gets you where you need to go.",
-    bullets:['Swap & bridge tokens across any chain instantly','Best rates, automatically sourced and routed','No signups, no KYC, no waiting periods','Works with any wallet you already use'],
-    cta:'Try the swap widget \u2192',
-    metrics:[{label:'Chains covered',val:'85+',fill:100,green:false},{label:'Settlement time',val:'<2s',fill:95,green:true},{label:'Fees',val:'0.10%',fill:10,green:true}]
-  },
-  wallet:{
-    name:'Wallet Developer',role:'Building user-facing wallet',
+  wallets:{
+    name:'Wallets',role:'Consumer & embedded wallet teams',
     icon:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M2 7h12" stroke="currentColor" stroke-width="1.4"/><circle cx="11" cy="10" r="1" fill="currentColor"/></svg>',
-    hl:'One integration.<br><strong>Connect your users to the whole onchain economy.</strong>',
-    body:'Add crosschain capability to your wallet, app, or payment flow with our API. Relay handles routing and settlement \u2014 you just ship.',
-    bullets:['API and SDK','Ready in minutes','Production-ready, battle-tested infrastructure','Reach users across 85+ chains and beyond'],
+    hl:'One integration.<br><strong>Connect your users to the entire onchain economy.</strong>',
+    body:'Add crosschain swaps, onboarding, and gasless flows to your wallet with a single API. Relay handles routing and settlement \u2014 you focus on your product.',
+    bullets:['Instant onboarding from any chain or token','In-wallet swapping & bridging across 85+ chains','Smart wallet compatible \u2014 ERC-4337 & ERC-3007','Gasless relaying \u2014 users pay with any token','Premium App Fees \u2014 earn revenue from every transaction'],
     cta:'Read the docs \u2192',
-    metrics:[{label:'Chains covered',val:'85+',fill:100,green:false},{label:'Integration time',val:'~1 day',fill:20,green:true},{label:'Volume moved',val:'$20B+',fill:100,green:false}]
+    metrics:[{label:'Chains covered',val:'85+',fill:100,green:false},{label:'Reliability',val:'99.9%',fill:99,green:true},{label:'Volume moved',val:'$20B+',fill:100,green:false}]
   },
-  defi:{
-    name:'DeFi Protocol',role:'Building liquidity or yield products',
+  apps:{
+    name:'Multichain Apps',role:'Trading apps, DeFi, NFT platforms',
     icon:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12l4-4 3 3 5-7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-    hl:'Tap liquidity<br><strong>on every chain at once.</strong>',
-    body:"Your protocol shouldn\u2019t care which chain the capital is on. Relay routes and settles crosschain transactions so your users deposit, swap, and earn without friction.",
-    bullets:['Route capital from any chain to your protocol','Atomic crosschain transactions','No bridge UX \u2014 invisible to your users','Battle-tested with $20B in volume'],
+    hl:'Your users are everywhere.<br><strong>Now your app can be too.</strong>',
+    body:'Whether you\u2019re building a trading app, DeFi protocol, or NFT marketplace \u2014 Relay lets users interact from any chain without friction. One failed transaction costs a user. Relay doesn\u2019t fail.',
+    bullets:['Invisible crosschain onboarding for any app','Low-latency fills for real-time trading flows','Crosschain checkout \u2014 OpenSea already uses Relay','Route capital from any chain to your protocol','SLAs with guaranteed availability on major routes'],
     cta:'Read the docs \u2192',
-    metrics:[{label:'Total volume routed',val:'$20B+',fill:100,green:false},{label:'Uptime SLA',val:'99.9%',fill:99,green:true},{label:'Chains supported',val:'85+',fill:100,green:false}]
+    metrics:[{label:'Total volume routed',val:'$20B+',fill:100,green:false},{label:'Settlement time',val:'<2s',fill:95,green:true},{label:'Networks supported',val:'85+',fill:100,green:false}]
   },
-  payments:{
-    name:'Payment Flow',role:'Building checkout or payment infra',
-    icon:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M2 7h12" stroke="currentColor" stroke-width="1.4"/><path d="M5 10h2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>',
-    hl:'Accept any token.<br><strong>Settle how you want.</strong>',
-    body:'Let your customers pay with whatever they hold \u2014 any token, any chain. Relay converts and settles to your preferred currency in seconds, invisibly.',
-    bullets:['Accept ETH, USDC, SOL, and 1000+ tokens','Settle to any chain or currency automatically','Sub-2s confirmation, no pending states','No new wallet required for your customers'],
-    cta:'Explore payment integration \u2192',
-    metrics:[{label:'Tokens accepted',val:'1000+',fill:100,green:false},{label:'Settlement time',val:'<2s',fill:95,green:true},{label:'Fee',val:'0.10%',fill:10,green:true}]
-  },
-  nft:{
-    name:'NFT / Marketplace',role:'Building NFT or digital asset products',
-    icon:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><circle cx="5.5" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M2 10l4-3 3 2.5 2-2 3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-    hl:'Let buyers pay<br><strong>from any chain, any wallet.</strong>',
-    body:"A buyer on Solana shouldn\u2019t miss a drop on Ethereum. Relay handles crosschain checkout so your sales aren\u2019t limited by which chain your buyers are on.",
-    bullets:['Crosschain checkout in one click','OpenSea already uses Relay \u2014 so can you','Buyer pays from any chain, you receive on yours','No bridge UX \u2014 just a buy button'],
-    cta:'See marketplace integration \u2192',
-    metrics:[{label:'Crosschain pairs',val:'7,000+',fill:100,green:false},{label:'Time to checkout',val:'<2s',fill:95,green:true},{label:'Integrations live',val:'OpenSea+',fill:60,green:false}]
+  chains:{
+    name:'Chains',role:'L1s, L2s, rollups & RaaS providers',
+    icon:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="5" cy="8" r="2.5" stroke="currentColor" stroke-width="1.4"/><circle cx="11" cy="8" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M7.5 8h1" stroke="currentColor" stroke-width="1.4"/></svg>',
+    hl:'Launch with liquidity.<br><strong>Grow with connectivity.</strong>',
+    body:'New chains need reliable bridging from day one. Relay provides instant inbound and outbound flows, invisible user onboarding, and gasless support \u2014 so your ecosystem activates users, not just moves assets.',
+    bullets:['Fast, reliable two-way bridging from launch','Invisible onboarding \u2014 fund wallets from any source chain','Gasless support removes the \u201cneed native gas\u201d blocker','Complementary to canonical bridges \u2014 Relay is the UX layer','RaaS-ready \u2014 repeatable integration for every new rollup'],
+    cta:'Read the docs \u2192',
+    metrics:[{label:'Chains live',val:'85+',fill:100,green:false},{label:'Fill reliability',val:'99.9%',fill:99,green:true},{label:'New chain onboarding',val:'Days',fill:20,green:true}]
   }
 };
 
