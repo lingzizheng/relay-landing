@@ -860,6 +860,7 @@ update();
     <h2 class="s2-h2">Built for the teams that move <em>onchain money.</em></h2>
 
     <div class="c-chips">
+      <button class="c-chip" data-id="user" onclick="setPersona('user')">&#128100; I'm a user</button>
       <button class="c-chip" data-id="wallets" onclick="setPersona('wallets')">&#128274; Wallets</button>
       <button class="c-chip" data-id="apps" onclick="setPersona('apps')">&#9889; Multichain Apps</button>
       <button class="c-chip" data-id="chains" onclick="setPersona('chains')">&#9939; Chains</button>
@@ -891,6 +892,15 @@ update();
 <script>
 (function(){
 const personas = {
+  user:{
+    name:'User',role:'Spending onchain',
+    icon:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M2 13c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>',
+    hl:'Spend what you hold,<br><strong>wherever you need it.</strong>',
+    body:"You shouldn\u2019t need to think about which chain your money is on. Relay gets you where you need to go.",
+    bullets:['Swap & bridge tokens across any chain instantly','Best rates, automatically sourced and routed','No signups, no KYC, no waiting periods','Works with any wallet you already use'],
+    cta:'Try the swap widget \u2192',
+    metrics:[{label:'Chains covered',val:'85+',fill:100,green:false},{label:'Settlement time',val:'<2s',fill:95,green:true},{label:'Fees',val:'0.10%',fill:10,green:true}]
+  },
   wallets:{
     name:'Wallets',role:'Consumer & embedded wallet teams',
     icon:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M2 7h12" stroke="currentColor" stroke-width="1.4"/><circle cx="11" cy="10" r="1" fill="currentColor"/></svg>',
