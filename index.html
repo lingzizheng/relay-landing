@@ -295,38 +295,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;
 .notion-stat-val.green{color:var(--grass);}
 .notion-stat-sub{font-size:11px;color:var(--s9);margin-top:3px;}
 
-/* tx feed */
-.tx-feed{
-  background:var(--v12);padding:18px 20px;
-  border-top:1px solid var(--s6);
-  min-height:120px;overflow:hidden;
-}
-.tx-feed-label{
-  font-size:10px;font-weight:600;letter-spacing:.08em;
-  text-transform:uppercase;color:rgba(219,222,255,.3);
-  margin-bottom:12px;display:flex;align-items:center;gap:6px;
-}
-.tx-feed-dot{
-  width:5px;height:5px;border-radius:50%;background:var(--grass);
-  animation:txpulse 1.8s ease-in-out infinite;
-}
-@keyframes txpulse{0%,100%{opacity:1;}50%{opacity:.35;}}
-.tx-row{
-  display:flex;align-items:center;gap:8px;
-  padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);
-  animation:txSlide .3s ease both;
-}
-.tx-row:last-child{border-bottom:none;}
-@keyframes txSlide{from{opacity:0;transform:translateX(-6px);}to{opacity:1;transform:none;}}
-.tx-from,.tx-to{
-  font-size:10px;font-weight:600;
-  padding:2px 6px;border-radius:var(--r-full);
-  font-family:'DM Mono',monospace;
-}
-.tx-sep{font-size:9px;color:rgba(219,222,255,.25);}
-.tx-token{font-size:11px;color:rgba(219,222,255,.55);flex:1;font-family:'DM Mono',monospace;}
-.tx-speed{font-size:10px;color:var(--grass);font-weight:600;white-space:nowrap;}
-
 @keyframes numFlip{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
 .num-anim{animation:numFlip .2s ease both;}
 
@@ -651,8 +619,8 @@ footer{border-top:1px solid var(--s6);background:white;padding:32px 52px;
       <!-- Copy -->
       <div class="s1-copy">
         <div class="s1-eyebrow">How it works</div>
-        <h2 class="s1-h2">Chains are infrastructure.<br><strong>Not your problem.</strong></h2>
-        <p class="s1-p">Relay sits between applications and blockchains &mdash; routing, executing, and settling crosschain transactions in the background. Whether you&rsquo;re a user or a developer, chain complexity disappears. Onchain money that just works.</p>
+        <h2 class="s1-h2">One integration.<br><strong>Every chain, every token.</strong></h2>
+        <p class="s1-p">Relay is the crosschain platform for building with onchain money &mdash; instant settlement, meta-aggregated swap routing, payments, and app fees built in. Pick your chains. We handle the rest.</p>
       </div>
 
       <!-- Right: Notion-style calculator card -->
@@ -660,7 +628,7 @@ footer{border-top:1px solid var(--s6);background:white;padding:32px 52px;
 
         <!-- checkboxes -->
         <div class="notion-checks-wrap">
-          <div class="notion-checks-label">Select your chains. Calculate what Relay enables you.</div>
+          <div class="notion-checks-label">Select your chains. See what Relay connects you to.</div>
           <div class="notion-grid" id="chainChecks">
 
             <div class="notion-row on" data-chain="ethereum" onclick="toggleChain(this)">
@@ -733,28 +701,20 @@ footer{border-top:1px solid var(--s6);background:white;padding:32px 52px;
         <!-- savings strip -->
         <div class="notion-savings">
           <div class="notion-stat">
-            <div class="notion-stat-label">Reachable wallets</div>
-            <div class="notion-stat-val" id="resWallets">313M+</div>
-            <div class="notion-stat-sub" id="resWalletsSub">across 3 chains</div>
+            <div class="notion-stat-label">Token pairs unlocked</div>
+            <div class="notion-stat-val" id="resPairs">2,700+</div>
+            <div class="notion-stat-sub" id="resPairsSub">across 3 chains</div>
           </div>
           <div class="notion-stat">
-            <div class="notion-stat-label">Infra cost saved / mo</div>
-            <div class="notion-stat-val green" id="resInfra">$14k</div>
-            <div class="notion-stat-sub">vs building it yourself</div>
+            <div class="notion-stat-label">Settlement speed</div>
+            <div class="notion-stat-val green" id="resSpeed">&lt;2s</div>
+            <div class="notion-stat-sub">instant, not minutes</div>
           </div>
           <div class="notion-stat">
-            <div class="notion-stat-label">Eng time saved</div>
-            <div class="notion-stat-val green" id="resWeeks">26 weeks</div>
-            <div class="notion-stat-sub" id="resWeeksSub">one integration</div>
+            <div class="notion-stat-label">Fill reliability</div>
+            <div class="notion-stat-val green" id="resReliability">99.9%</div>
+            <div class="notion-stat-sub" id="resReliabilitySub">$20B+ volume settled</div>
           </div>
-        </div>
-
-        <!-- live tx feed -->
-        <div class="tx-feed">
-          <div class="tx-feed-label">
-            <span class="tx-feed-dot"></span>Live transactions on your chains
-          </div>
-          <div id="txFeed"></div>
         </div>
 
       </div>
@@ -765,22 +725,19 @@ footer{border-top:1px solid var(--s6);background:white;padding:32px 52px;
 <script>
 (function(){
 const CHAIN_DATA = {
-  ethereum: { name:'ETH',  color:'#627EEA', vm:'EVM',  wallets:230, infraCost:8200, engWeeks:14 },
-  base:     { name:'BASE', color:'#0052FF', vm:'EVM',  wallets:45,  infraCost:3100, engWeeks:6  },
-  arbitrum: { name:'ARB',  color:'#28A0F0', vm:'EVM',  wallets:38,  infraCost:2800, engWeeks:6  },
-  solana:   { name:'SOL',  color:'#9945FF', vm:'SVM',  wallets:120, infraCost:5400, engWeeks:12 },
-  optimism: { name:'OP',   color:'#FF4C0C', vm:'EVM',  wallets:22,  infraCost:2400, engWeeks:5  },
-  bitcoin:  { name:'BTC',  color:'#F7931A', vm:'UTXO', wallets:190, infraCost:9600, engWeeks:18 },
-  polygon:  { name:'POL',  color:'#8247E5', vm:'EVM',  wallets:55,  infraCost:2600, engWeeks:5  },
-  avalanche:{ name:'AVAX', color:'#E84142', vm:'EVM',  wallets:18,  infraCost:2200, engWeeks:4  },
-  zksync:   { name:'ZKS',  color:'#4E529A', vm:'EVM',  wallets:12,  infraCost:2000, engWeeks:4  },
+  ethereum: { name:'ETH',  color:'#627EEA', vm:'EVM',  tokens:420 },
+  base:     { name:'BASE', color:'#0052FF', vm:'EVM',  tokens:280 },
+  arbitrum: { name:'ARB',  color:'#28A0F0', vm:'EVM',  tokens:310 },
+  solana:   { name:'SOL',  color:'#9945FF', vm:'SVM',  tokens:650 },
+  optimism: { name:'OP',   color:'#FF4C0C', vm:'EVM',  tokens:180 },
+  bitcoin:  { name:'BTC',  color:'#F7931A', vm:'UTXO', tokens:3   },
+  polygon:  { name:'POL',  color:'#8247E5', vm:'EVM',  tokens:260 },
+  avalanche:{ name:'AVAX', color:'#E84142', vm:'EVM',  tokens:140 },
+  zksync:   { name:'ZKS',  color:'#4E529A', vm:'EVM',  tokens:90  },
 };
-const TOKENS = ['ETH','USDC','USDT','SOL','BTC','MATIC','ARB','OP','AVAX'];
 let selected = new Set(['ethereum','base','arbitrum']);
-let feedTimer = null;
 
-function fmt(n){ return n>=1000?'$'+(n/1000).toFixed(0)+'k':'$'+n; }
-function fmtW(n){ return n>=1000?(n/1000).toFixed(1)+'B+':n+'M+'; }
+function fmtK(n){ return n>=1000?(n/1000).toFixed(1).replace(/\.0$/,'')+'k+':n.toLocaleString()+'+'; }
 function flash(id,val){
   const el=document.getElementById(id);
   if(!el) return;
@@ -789,57 +746,25 @@ function flash(id,val){
   el.textContent=val;
   el.classList.add('num-anim');
 }
+function flashHtml(id,val){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.classList.remove('num-anim');
+  void el.offsetWidth;
+  el.innerHTML=val;
+  el.classList.add('num-anim');
+}
 
 function update(){
   const sel=[...selected];
-  const wallets=sel.reduce((a,c)=>a+(CHAIN_DATA[c]?.wallets||0),0);
-  const infra  =sel.reduce((a,c)=>a+(CHAIN_DATA[c]?.infraCost||0),0);
-  const weeks  =sel.reduce((a,c)=>a+(CHAIN_DATA[c]?.engWeeks||0),0);
-  flash('resWallets', sel.length?fmtW(wallets):'—');
-  flash('resInfra',   sel.length?fmt(infra):'—');
-  flash('resWeeks',   sel.length?weeks+' weeks':'—');
-  const sub=document.getElementById('resWalletsSub');
+  const tokens=sel.map(c=>CHAIN_DATA[c]?.tokens||0);
+  let pairs=0;
+  for(let i=0;i<tokens.length;i++) for(let j=i+1;j<tokens.length;j++) pairs+=tokens[i]+tokens[j];
+  flash('resPairs', sel.length?fmtK(pairs):'—');
+  const sub=document.getElementById('resPairsSub');
   if(sub) sub.textContent=sel.length===1?'on '+(CHAIN_DATA[sel[0]]?.name||''):'across '+sel.length+' chains';
-  const wsub=document.getElementById('resWeeksSub');
-  if(wsub) wsub.textContent=sel.length?'one Relay integration vs '+weeks+' weeks':'one integration';
-  renderFeed(sel);
-}
-
-function makeTx(sel){
-  if(sel.length<2) return null;
-  const from=sel[Math.floor(Math.random()*sel.length)];
-  let to=sel[Math.floor(Math.random()*sel.length)];
-  let tries=0;
-  while(to===from&&sel.length>1&&tries++<5) to=sel[Math.floor(Math.random()*sel.length)];
-  const token=TOKENS[Math.floor(Math.random()*TOKENS.length)];
-  const amt=(Math.random()*9+0.1).toFixed(2);
-  const ms=(Math.random()*1.4+0.4).toFixed(1);
-  const fc=CHAIN_DATA[from].color, tc=CHAIN_DATA[to].color;
-  const fn=CHAIN_DATA[from].name, tn=CHAIN_DATA[to].name;
-  return `<div class="tx-row">
-    <span class="tx-from" style="background:${fc}20;color:${fc}">${fn}</span>
-    <span class="tx-sep">→</span>
-    <span class="tx-to" style="background:${tc}20;color:${tc}">${tn}</span>
-    <span class="tx-token">${amt} ${token}</span>
-    <span class="tx-speed">⚡${ms}s</span>
-  </div>`;
-}
-
-function renderFeed(sel){
-  if(feedTimer){ clearInterval(feedTimer); feedTimer=null; }
-  const feed=document.getElementById('txFeed');
-  if(!feed) return;
-  if(sel.length<2){
-    feed.innerHTML='<div style="font-size:11px;color:rgba(219,222,255,.25);padding:4px 0">Select 2+ chains to see live routing</div>';
-    return;
-  }
-  feed.innerHTML=[makeTx(sel),makeTx(sel),makeTx(sel)].filter(Boolean).join('');
-  feedTimer=setInterval(()=>{
-    const rows=feed.querySelectorAll('.tx-row');
-    if(rows.length>=4) rows[0].remove();
-    const row=makeTx([...selected]);
-    if(row) feed.insertAdjacentHTML('beforeend',row);
-  },1800);
+  flashHtml('resSpeed', sel.length?'&lt;2s':'—');
+  flash('resReliability', sel.length?'99.9%':'—');
 }
 
 window.toggleChain=function(el){
